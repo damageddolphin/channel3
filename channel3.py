@@ -6,7 +6,6 @@
 import gc
 import json
 import time
-# from bs4 import BeautifulSoup
 from tkinter import *
 
 from loadNews import *
