@@ -44,3 +44,6 @@ SET loadMuisc = 1 to turn on Background Music. ADD LIST OF MP3 FILES TO playlist
 Change cableCo = "ADELPHIA CABLE" to any value to display in the top left.
 ----------
 
+Run by
+
+$ bash start.sh
