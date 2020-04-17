@@ -3,7 +3,6 @@ Code from probnot's wpg-weatherchan and revised to work with US based weather. h
 
 
 Channel 3 is a recreation of the teletext service found on US cable systems in the 80s and 90s
-
 ----------
 
 PREREQUISITES:
