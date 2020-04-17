@@ -14,7 +14,7 @@ Download VCR OSD Mono font and place in /usr/local/share/fonts
 
 Install python3-pip
 
-Install mpg321
+Install mpg321 
 
 During first run, if there are any missing modules install with pip3 install [MODULE NAME]
 Common Modules :
