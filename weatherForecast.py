@@ -1,5 +1,6 @@
-import urllib.request
 import json
+import urllib.request
+
 from setup import obsUrl
 
 urllib.request.urlretrieve(obsUrl, 'weatherForecast.json')

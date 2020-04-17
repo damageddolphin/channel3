@@ -3,25 +3,22 @@
 # code is scrounged together, please be kind
 # Revisions by DamagedDolphin
 
-import os
-import time
-import datetime
-import feedparser
 import gc
 import json
-import requests
-import re
-#from bs4 import BeautifulSoup
+import time
+# from bs4 import BeautifulSoup
 from tkinter import *
-from weatherObservations import *
-from weatherAlert import *
+
 from loadNews import *
 from setup import obsUrl
+from weatherAlert import *
+from weatherObservations import *
 
 fontSet = "VCR OSD Mono"
 
 loadWeather()
 weatherAlerts()
+
 
 ### US WEATHER FORECAST LOADER
 ### CHANGE VALUES IN SETUP.PY
@@ -32,31 +29,39 @@ def forecast():
     with open('weatherForecast.json') as json_file:
         data = json.load(json_file)
 
+
 dayValue = 0
+
+
 def forecastCount(dayValue):
     dayValue = dayValue + 1
     try:
         data['time']['startPeriodName'][dayValue]
     except:
         dayValue = 0
-    return(dayValue)
+    return (dayValue)
+
 
 ### US WEATHER ALERT LOADER
 ### CHANGE VALUES IN SETUP.PY
 
 alertValue = 0
+
+
 def alertCount(alertValue):
     alertValue = alertValue + 1
     try:
         weatherAlert[alertValue]
     except:
         alertValue = 0
-    return(alertValue)
+    return (alertValue)
+
 
 def clock():
     current = time.strftime("%a %b %d %G %r")
     timeText.configure(text=current.upper())
-    root.after(1000, clock) # run every 1sec
+    root.after(1000, clock)  # run every 1sec
+
 
 ### CHANGE IN SETUP.PY
 if loadMusic == 1:
@@ -65,6 +70,7 @@ if loadMusic == 1:
 # main weather pages
 ### LOAD FORECAST AND RELOAD EVERY HOUR
 forecast()
+
 
 def weather_page():
     global dayValue
@@ -86,7 +92,7 @@ def weather_page():
         weatherCredit = ""
         loadWeather()
         forecast()
-### THIS SECTION DISPLAYS WEATHER FORECAST INFORMATION
+    ### THIS SECTION DISPLAYS WEATHER FORECAST INFORMATION
     # pull in current seconds and minutes -- to be used to cycle the middle section every 30sec
     time_sec = time.localtime().tm_sec
     time_min = time.localtime().tm_min
@@ -96,7 +102,7 @@ def weather_page():
 
     if time_sec < 30:
         weathercol = "Blue"
-        if (time_min % 2) == 0: # screen 1 -- today's forecast in text + start of tomorrow's forecast
+        if (time_min % 2) == 0:  # screen 1 -- today's forecast in text + start of tomorrow's forecast
             dayString = data['time']['startPeriodName'][dayValue]
             tempLabel = data['time']['tempLabel'][dayValue]
             tempString = str(data['data']['temperature'][dayValue])
@@ -113,7 +119,7 @@ def weather_page():
             s8 = s[329:376]
             dayValue = forecastCount(dayValue)
 
-### THIS SECTION DISPLAYS WEATHER CURRENT CONDITIONS
+        ### THIS SECTION DISPLAYS WEATHER CURRENT CONDITIONS
         else:
             weatherLocation, weatherLastObs, weatherSkyConds, weatherTemp, weatherDewpoint, weatherFeelsLike, weatherWinds, weatherGusts, weatherHumidity, weatherBarometer, weatherVisibility, weatherCredit = getWeather()
             s1 = weatherLocation.upper()
@@ -125,7 +131,7 @@ def weather_page():
             s7 = ""
             s8 = weatherCredit.upper()
     if time_sec >= 30:
-### US WEATHER ALERT CHECKING SECTION *** DO NOT MODIFY ***
+        ### US WEATHER ALERT CHECKING SECTION *** DO NOT MODIFY ***
 
         weatherAlert = weatherAlerts()
         alertCheck = ""
@@ -133,10 +139,10 @@ def weather_page():
             alertCheck = weatherAlert[alertValue].upper()
         except:
             alertCheck = "ERROR CHECKING FOR WEATHER ALERTS - PLEASE CHECK YOUR LOCAL FORECAST OFFICE"
-### IF ACTIVE WEATHER ALERTS WEATHER FORECAST AND WEATHER ALERT SHOWN
+        ### IF ACTIVE WEATHER ALERTS WEATHER FORECAST AND WEATHER ALERT SHOWN
         if alertCheck != "NONE":
             weathercol = "Purple"
-            if (time_min % 2) == 0: # screen 2 -- next day forecast cont'd + 3rd day
+            if (time_min % 2) == 0:  # screen 2 -- next day forecast cont'd + 3rd day
                 dayString = data['time']['startPeriodName'][dayValue]
                 tempLabel = data['time']['tempLabel'][dayValue]
                 tempString = str(data['data']['temperature'][dayValue])
@@ -165,7 +171,7 @@ def weather_page():
                 s8 = s[329:376]
                 alertValue = alertCount(alertValue)
         else:
-### IF NO ACTIVE WEATHER ALERTS ONLY WEATHER FORECAST SHOWN
+            ### IF NO ACTIVE WEATHER ALERTS ONLY WEATHER FORECAST SHOWN
             weathercol = "Purple"
             dayString = data['time']['startPeriodName'][dayValue]
             tempLabel = data['time']['tempLabel'][dayValue]
@@ -195,15 +201,16 @@ def weather_page():
     weather.create_text(15, 105, anchor='nw', text=s4, font=(fontSet, 20, "bold"), fill="white")
     weather.create_text(15, 135, anchor='nw', text=s5, font=(fontSet, 20, "bold"), fill="white")
     weather.create_text(15, 165, anchor='nw', text=s6, font=(fontSet, 20, "bold"), fill="white")
-    weather.create_text(15, 195, anchor='nw', text=s7, font=(fontSet, 20, "bold"), fill="white") 
-    weather.create_text(15, 225, anchor='nw', text=s8, font=(fontSet, 20, "bold"), fill="white") 
+    weather.create_text(15, 195, anchor='nw', text=s7, font=(fontSet, 20, "bold"), fill="white")
+    weather.create_text(15, 225, anchor='nw', text=s8, font=(fontSet, 20, "bold"), fill="white")
 
-    root.after(30000, weather_page) # re-run every 30sec from program launch
+    root.after(30000, weather_page)  # re-run every 30sec from program launch
+
 
 # setup main stuff
 
 root = Tk()
-root.attributes('-fullscreen',True)
+root.attributes('-fullscreen', True)
 root.geometry("800x480")
 root.config(cursor="none", bg="green")
 root.wm_title("wpg-weatherchan_V0.0.12")
@@ -222,6 +229,7 @@ Title.place(x=20, y=40)
 # Middle Section (Cycling weather pages, every 30sec)
 weather_page()
 
+
 # scrolling text canvas
 def marqueeCreate():
     global marquee
@@ -229,11 +237,12 @@ def marqueeCreate():
     marquee.config(highlightbackground="green")
     marquee.place(x=40, y=400)
 
+
 # read in RSS data and prepare it
 
 width = 35
 pad = ""
-for r in range(width): #create an empty string of 35 characters
+for r in range(width):  # create an empty string of 35 characters
     pad = pad + " "
 
 ### RSS FEED LOADER
@@ -253,18 +262,18 @@ while True:
             marqueeCreate()
         newsItem = item.upper() + pad
 
-# use the length of the news feeds to determine the total pixels in the scrolling section
+        # use the length of the news feeds to determine the total pixels in the scrolling section
         marquee_length = len(newsItem)
-        pixels = marquee_length * 24 # roughly 24px per char
+        pixels = marquee_length * 24  # roughly 24px per char
 
-# setup scrolling text
+        # setup scrolling text
 
         text = marquee.create_text(1, 2, anchor='nw', text=pad + newsItem + pad, font=(fontSet, 25,), fill="white")
 
-        for p in range(pixels+601):
-            marquee.move(text, -1, 0) #shift the canvas to the left by 1 pixel
+        for p in range(pixels + 601):
+            marquee.move(text, -1, 0)  # shift the canvas to the left by 1 pixel
             marquee.update()
-            time.sleep(0.005) # scroll every 5ms
+            time.sleep(0.005)  # scroll every 5ms
 
         del text
         del marquee
