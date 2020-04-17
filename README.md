@@ -3,6 +3,7 @@ Code from probnot's wpg-weatherchan and revised to work with US based weather. h
 
 
 Channel 3 is a recreation of the teletext service found on US cable systems in the 80s and 90s
+
 ----------
 
 PREREQUISITES:
@@ -16,6 +17,10 @@ Install python3-pip
 Install mpg321
 
 During first run, if there are any missing modules install with pip3 install [MODULE NAME]
+Common Modules :
+feedparser
+requests
+xmltodict
 
 ----------
 The program is currently set for Oahu, Hawaii weather. To change, modify setup.py. 
